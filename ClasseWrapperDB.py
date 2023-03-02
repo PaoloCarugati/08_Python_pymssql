@@ -5,6 +5,8 @@
 
 #importo il modulo 
 import pymssql
+from pymssql import output
+from pymssql import _mssql
 
 class WrapperDB:
     
@@ -26,7 +28,6 @@ class WrapperDB:
                         password = self._password, database = self._database)
             #print(f"\nConnessione effettuata! (DB: {self._database})\n")
             return WrapperDB.conn	
-
         except:
             print(f"\nConnessione NON riuscita! (DB: {self._database})\n")
             return 0
@@ -36,8 +37,7 @@ class WrapperDB:
         #disconnessione	
         try:
             co.close()
-            #print(f"\nCHIUSURA connessione! (DB: {self._database})\n")
-            
+            #print(f"\nCHIUSURA connessione! (DB: {self._database})\n") 
         except:
             print(f"\nCHIUSURA connessione NON riuscita! (DB: {self._database})\n")
             return 0
@@ -97,6 +97,36 @@ class WrapperDB:
             #print("\INSERIMENTO POST/i: Si sono verificati degli errori!")
             self.disconnetti(c)
             return False
+
+
+    def inserisciPostSP(self, parametri):
+        #inserisce un nuovo post
+        #parametri: (autore, testo)
+        try:
+            #dichiaro id come valore di output per la SP
+            id = output(int)
+            #aggiungo id ai parametri
+            parametri = parametri + (id,)
+            c = self.connetti() 
+            cursore = c.cursor()
+            res = cursore.callproc('dbo.PC_InserisciPost', parametri)
+            c.commit()
+            #print("INSERIMENTO POST AVVENUTO")
+            #return True            
+            return res[2]
+        except _mssql.MssqlDatabaseException as e:
+            print("A MSSQLDatabaseException has been caught.")
+            print('Number = ',e.number)
+            print('Severity = ',e.severity)
+            print('State = ',e.state)
+            print('Message = ',e.message)
+            return -1
+        except Exception as err:
+            #print("\INSERIMENTO POST/i: Si sono verificati degli errori!")
+            print(str(err))
+            self.disconnetti(c)
+            #return False
+            return -1
 
     def daiLikeAPost(self, id, is_like = True):
         #mette like a post

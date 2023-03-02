@@ -5,6 +5,7 @@ from ClasseWrapperDB import WrapperDB
 #wrp = WrapperDB()
 wrp = WrapperDB("213.140.22.237\\SQLEXPRESS", "CRD2122", "xxx123##", "CRD2122")
 
+
 print()
 print("\n***** TEST elencoPost *****")
 print(wrp.elencoPost(as_dict = True))
@@ -27,12 +28,20 @@ print(wrp.singoloPost(1))
 print("*******************************")
 
 
-print()
-print("\n***** TEST inserisciPost *****")
-parametri = ("Omino del meteo", "Ieri nevicava!!!")
-wrp.inserisciPost(parametri)
-print(wrp.elencoPost(as_dict = True))
-print("********************************")
+#print()
+#print("\n***** TEST inserisciPost *****")
+#parametri = ("Omino del meteo", "Ieri nevicava!!!")
+#wrp.inserisciPost(parametri)
+#print(wrp.elencoPost(as_dict = True))
+#print("********************************")
+
+
+#print()
+#print("\n***** TEST inserisciPostSP *****")
+#parametri = ("PC", "Test con stored procedure")
+#print(wrp.inserisciPostSP(parametri))
+#print(wrp.elencoPost(as_dict = True))
+#print("********************************")
 
 
 #print()
